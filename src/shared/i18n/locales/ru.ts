@@ -7,9 +7,8 @@ export const ru = {
     auth: "Войти",
     register: "Зарегистрироваться",
     form: {
-      email: "Почта",
+      username: "Имя пользователя",
       password: "Пароль",
-      phone: "Телефон",
     },
     messages: {
       success: "Успешная авторизация!",
@@ -22,9 +21,8 @@ export const ru = {
     haveAccount: "Уже есть аккаунт?",
     signIn: "Войти",
     form: {
-      email: "Email",
+      username: "Имя пользователя",
       password: "Пароль",
-      phone: "Телефон",
     },
     messages: {
       success: "Регистрация успешна!",
@@ -35,7 +33,7 @@ export const ru = {
     logout: "Выйти",
   },
   validation: {
-    email: "Неверный формат email",
+    username: "Имя пользователя должно содержать минимум 4 символов",
     password: "Пароль должен содержать минимум 6 символов",
     required: "Обязательное поле",
   },

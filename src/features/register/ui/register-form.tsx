@@ -15,8 +15,8 @@ export function RegisterForm() {
 
   const fields = [
     {
-      name: "email",
-      label: t.register.form.email,
+      name: "username",
+      label: t.register.form.username,
       type: InputTypes.TEXT,
       required: true,
     },
@@ -24,12 +24,6 @@ export function RegisterForm() {
       name: "password",
       label: t.register.form.password,
       type: InputTypes.PASSWORD,
-      required: true,
-    },
-    {
-      name: "phone",
-      label: t.register.form.phone,
-      type: InputTypes.PHONE,
       required: true,
     },
   ];

@@ -16,8 +16,8 @@ export function AuthForm() {
 
   const fields = [
     {
-      name: "email",
-      label: t.auth.form.email,
+      name: "username",
+      label: t.auth.form.username,
       type: InputTypes.TEXT,
       required: true,
     },

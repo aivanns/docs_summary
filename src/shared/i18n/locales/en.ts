@@ -7,9 +7,8 @@ export const en = {
     auth: "Sign in",
     register: "Register it",
     form: {
-      email: "Email",
+      username: "Username",
       password: "Password",
-      phone: "Phone",
     },
     messages: {
       success: "Successfully logged in!",
@@ -23,9 +22,8 @@ export const en = {
     haveAccount: "Already have an account?",
     signIn: "Sign in",
     form: {
-      email: "Email",
+      username: "Username",
       password: "Password",
-      phone: "Phone",
     },
     messages: {
       success: "Registration successful!",
@@ -36,7 +34,7 @@ export const en = {
     logout: "Logout",
   },
   validation: {
-    email: "Invalid email address",
+    username: "Username must be at least 4 characters",
     password: "Password must be at least 6 characters",
     required: "This field is required",
   },

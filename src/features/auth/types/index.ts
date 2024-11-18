@@ -3,7 +3,7 @@ import { ValidationMessages } from "@/shared/types/common";
 
 export const createAuthSchema = (messages: ValidationMessages) =>
   z.object({
-    email: z.string().email(messages.validation.email),
+    username: z.string().min(4, messages.validation.username),
     password: z.string().min(6, messages.validation.password),
   });
 

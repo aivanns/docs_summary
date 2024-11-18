@@ -1,6 +1,6 @@
 export interface ValidationMessages {
   validation: {
-    email: string;
+    username: string;
     password: string;
     required: string;
   };

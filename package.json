@@ -1,0 +1,47 @@
+{
+  "name": "next_auth_template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "gen": "node --loader ts-node/esm scripts/generate.ts"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
+    "@tanstack/react-query": "^5.59.16",
+    "antd": "^5.21.5",
+    "antd-phone-input": "^0.3.10",
+    "axios": "^1.7.7",
+    "clsx": "^2.1.1",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.454.0",
+    "next": "15.0.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwind-merge": "^2.3.0",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/gradient-string": "^1.1.5",
+    "@types/node": "^20.0.0",
+    "@types/ora": "^3.2.0",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
+    "chalk": "^5.3.0",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.1",
+    "gradient-string": "^2.0.2",
+    "ora": "^8.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  }
+}

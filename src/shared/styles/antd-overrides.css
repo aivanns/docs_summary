@@ -1,0 +1,214 @@
+/* Инпуты */
+.dark .ant-input,
+.dark .ant-input-password,
+.dark .ant-input-number,
+.dark .ant-input-affix-wrapper {
+  background-color: var(--input-background) !important;
+  border-color: var(--input-border) !important;
+  color: var(--foreground) !important;
+}
+
+.dark .ant-input:hover,
+.dark .ant-input-password:hover,
+.dark .ant-input-number:hover,
+.dark .ant-input-affix-wrapper:hover {
+  border-color: var(--primary) !important;
+}
+
+.dark .ant-input:focus,
+.dark .ant-input-focused,
+.dark .ant-input-password:focus,
+.dark .ant-input-number:focus,
+.dark .ant-input-affix-wrapper-focused {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px var(--input-ring) !important;
+}
+
+.dark .ant-input-password-icon,
+.dark .anticon {
+  color: var(--foreground) !important;
+}
+
+.ant-input,
+.ant-input-password,
+.ant-input-number,
+.ant-input-affix-wrapper {
+  background-color: var(--input-background) !important;
+  border-color: var(--input-border) !important;
+  color: var(--foreground) !important;
+}
+
+.ant-input:hover,
+.ant-input-password:hover,
+.ant-input-number:hover,
+.ant-input-affix-wrapper:hover {
+  border-color: var(--primary) !important;
+}
+
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-password:focus,
+.ant-input-number:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px var(--input-ring) !important;
+}
+
+/* Кнопки */
+.ant-btn-primary {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border: none !important;
+}
+
+.ant-btn-primary:hover {
+  background-color: var(--primary-hover) !important;
+}
+
+.ant-btn-default {
+  background-color: var(--secondary) !important;
+  color: var(--secondary-foreground) !important;
+  border: none !important;
+}
+
+.ant-btn-default:hover {
+  background-color: var(--secondary-hover) !important;
+}
+
+/* Сообщения и статусы */
+.ant-input-status-error,
+.ant-input-affix-wrapper-status-error {
+  border-color: var(--error) !important;
+}
+
+.ant-message-success .anticon {
+  color: var(--success) !important;
+}
+
+.ant-message-error .anticon {
+  color: var(--error) !important;
+}
+
+.ant-message-warning .anticon {
+  color: var(--warning) !important;
+}
+
+/* Message стили */
+.ant-message .ant-message-notice-content {
+  background: var(--card-background) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.ant-message-custom-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.ant-message .anticon {
+  margin-right: 0 !important;
+}
+
+/* Select */
+.ant-select-dropdown {
+  background: var(--card-background) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.ant-select-item {
+  color: var(--foreground) !important;
+}
+
+.ant-select-item-option-selected {
+  background: var(--primary) !important;
+  color: white !important;
+}
+
+/* Modal & Drawer */
+.ant-modal-content,
+.ant-drawer-content {
+  background: var(--card-background) !important;
+}
+
+.ant-modal-header,
+.ant-drawer-header {
+  background: var(--card-background) !important;
+}
+
+/* Table */
+.ant-table {
+  background: var(--card-background) !important;
+  color: var(--foreground) !important;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* Dropdown */
+.ant-dropdown-menu {
+  background: var(--card-background) !important;
+}
+
+.ant-dropdown-menu-item:hover {
+  background: var(--input-background) !important;
+}
+
+/* Tabs */
+.ant-tabs-tab {
+  color: var(--foreground) !important;
+}
+
+.ant-tabs-tab-active {
+  color: var(--primary) !important;
+}
+
+.ant-pagination-item {
+  background: var(--card-background) !important;
+  border-color: var(--border) !important;
+}
+
+.ant-pagination-item-active {
+  border-color: var(--primary) !important;
+}
+
+/* Alert */
+.ant-alert {
+  background: var(--card-background) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* Notification */
+.ant-notification-notice {
+  background: var(--card-background) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* Tooltip & Popover */
+.ant-tooltip-inner,
+.ant-popover-inner {
+  background: var(--card-background) !important;
+  color: var(--foreground) !important;
+}
+
+/* DatePicker & TimePicker */
+.ant-picker-panel-container {
+  background: var(--card-background) !important;
+}
+
+.ant-picker-content th,
+.ant-picker-content td {
+  color: var(--foreground) !important;
+}
+
+/* Steps */
+.ant-steps-item-title {
+  color: var(--foreground) !important;
+}
+
+.ant-tag {
+  background: var(--card-background) !important;
+  border-color: var(--border) !important;
+}

@@ -40,6 +40,12 @@ const config: Config = {
           lighter: "#1E1F23",
           border: "rgba(255,255,255,0.1)",
         },
+        'dark-purple': {
+          DEFAULT: '#6B4EFF',
+          hover: '#5B3FE8'
+        },
+        'light-surface': '#F8FAFC',
+        'dark-surface': '#1E1F23',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

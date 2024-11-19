@@ -212,3 +212,61 @@
   background: var(--card-background) !important;
   border-color: var(--border) !important;
 }
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-textarea-focused,
+.ant-input-textarea:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px rgba(0, 193, 160, 0.2) !important;
+}
+
+/* Стили для темной темы */
+.dark .ant-input:focus,
+.dark .ant-input-focused,
+.dark .ant-input-textarea-focused,
+.dark .ant-input-textarea:focus {
+  border-color: var(--dark-purple) !important;
+  box-shadow: 0 0 0 2px rgba(107, 78, 255, 0.2) !important;
+}
+
+/* Стили для hover состояния */
+.ant-input:hover,
+.ant-input-textarea:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px rgba(0, 193, 160, 0.1) !important;
+}
+
+/* Стили для focus состояния */
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-textarea-focused,
+.ant-input-textarea:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px rgba(0, 193, 160, 0.2) !important;
+}
+
+/* Стили для темной темы */
+.dark .ant-input:hover,
+.dark .ant-input-textarea:hover {
+  border-color: rgb(107, 78, 255) !important;
+  box-shadow: 0 0 0 2px rgba(107, 78, 255, 0.1) !important;
+}
+
+.dark .ant-input:focus,
+.dark .ant-input-focused,
+.dark .ant-input-textarea-focused,
+.dark .ant-input-textarea:focus {
+  border-color: rgb(107, 78, 255) !important;
+  box-shadow: 0 0 0 2px rgba(107, 78, 255, 0.2) !important;
+}
+
+/* Стили для placeholder */
+.ant-input::placeholder,
+.ant-input-textarea::placeholder {
+  color: rgba(108, 114, 129, 0.7) !important;
+}
+
+.dark .ant-input::placeholder,
+.dark .ant-input-textarea::placeholder {
+  color: rgba(156, 163, 175, 0.5) !important;
+}

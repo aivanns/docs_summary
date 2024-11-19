@@ -16,7 +16,7 @@ export function LanguageSwitcher() {
   };
 
   return (
-    <Button onClick={toggleLanguage} className="fixed top-4 right-4">
+    <Button onClick={toggleLanguage} className="fixed top-20 right-4">
       {language === config.locale.languages.EN
         ? config.locale.languages.RU
         : config.locale.languages.EN}

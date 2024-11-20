@@ -2,10 +2,11 @@ import { create } from "zustand";
 import { config } from "@/shared/config";
 import { SessionState } from "../types";
 import { sessionApi } from "../api";
+import Cookies from 'js-cookie';
 
 const getInitialAuthState = () => {
   if (typeof window === "undefined") return false;
-  return !!localStorage.getItem(config.auth.JWT.REFRESH_TOKEN);
+  return !!Cookies.get(config.auth.JWT.ACCESS_TOKEN);
 };
 
 export const useSessionStore = create<SessionState>((set) => ({
@@ -17,10 +18,7 @@ export const useSessionStore = create<SessionState>((set) => ({
   refreshTokens: async () => {
     try {
       set({ isLoading: true, error: null });
-      const refreshToken =
-        typeof window !== "undefined"
-          ? localStorage.getItem(config.auth.JWT.REFRESH_TOKEN)
-          : null;
+      const refreshToken = Cookies.get(config.auth.JWT.REFRESH_TOKEN);
 
       if (!refreshToken) {
         throw new Error("No refresh token found");
@@ -28,25 +26,22 @@ export const useSessionStore = create<SessionState>((set) => ({
 
       const data = await sessionApi.refreshToken(refreshToken);
 
-      if (data.refreshToken) {
-        if (typeof window !== "undefined") {
-          localStorage.setItem(
-            config.auth.JWT.REFRESH_TOKEN,
-            data.refreshToken
-          );
-        }
+      if (data.refreshToken && data.accessToken) {
         await fetch("/api/auth/set-token", {
           method: "POST",
-          body: JSON.stringify({ token: data.refreshToken }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken 
+          }),
         });
       }
 
       set({ isAuthenticated: true });
       return data;
     } catch (error) {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(config.auth.JWT.REFRESH_TOKEN);
-      }
       await fetch("/api/auth/remove-token", { method: "POST" });
       set({
         error: error as Error,
@@ -59,11 +54,11 @@ export const useSessionStore = create<SessionState>((set) => ({
   },
 
   logout: async () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem(config.auth.JWT.REFRESH_TOKEN);
+    try {
+      await fetch("/api/auth/remove-token", { method: "POST" });
+      set({ isAuthenticated: false });
+    } catch (error) {
+      console.error('Ошибка при выходе:', error);
     }
-    await fetch("/api/auth/remove-token", { method: "POST" });
-    set({ isAuthenticated: false });
-    window.location.href = '/auth';
   },
 }));

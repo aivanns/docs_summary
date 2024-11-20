@@ -8,10 +8,13 @@ import { Button, Tooltip } from "antd";
 import { LogOut } from "lucide-react";
 import { useSessionStore } from "@/entities/session";
 import { useTranslations } from "@/shared/hooks/use-translations";
+import { useRouter } from "next/navigation";
+import { AUTH } from "@/shared/router/routes";
 
 const SummaryHeader = ({ className }: { className?: string }) => {
   const [username, setUsername] = useState<string | null>(null);
   const { logout } = useSessionStore();
+  const router = useRouter();
   const t = useTranslations();
 
   useEffect(() => {
@@ -19,6 +22,11 @@ const SummaryHeader = ({ className }: { className?: string }) => {
       .then((data) => setUsername(data.data.username))
       .catch(() => setUsername(null));
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push(AUTH);
+  };
 
   return <div className={cn(
     "flex justify-between items-center",
@@ -38,7 +46,7 @@ const SummaryHeader = ({ className }: { className?: string }) => {
       <div className="text-white/80 dark:text-gray-400 font-medium">{username}</div>
       <Tooltip title={t.summary.logout.tooltip}>
         <Button 
-          onClick={logout}
+          onClick={handleLogout}
           type="text" 
           icon={<LogOut size={18} />}
           className={cn(

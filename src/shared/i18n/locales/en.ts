@@ -46,9 +46,14 @@ export const en = {
     result: "Result",
     enterText: "Enter text for summarization",
     queuePosition: "Your position in queue:",
+    error: "An error occurred while processing the request",
     logout: {
       button: "Sign out",
       tooltip: "Sign out from system"
-    }
+    },
+    invalidFileType: "Unsupported file type",
+    fileTooLarge: "File size exceeds 10MB",
+    fileReadError: "Error reading file",
+    emptyText: "Enter text for summarization"
   },
 };

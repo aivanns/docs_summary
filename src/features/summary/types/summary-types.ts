@@ -14,3 +14,11 @@ export interface SummaryListResponse {
   items: SummaryResponse[];
   total: number;
 }
+
+export interface FileUploadEvent extends React.ChangeEvent<HTMLInputElement> {
+  target: HTMLInputElement & {
+    files: FileList;
+  };
+}
+
+export type SupportedFileTypes = '.txt' | '.doc' | '.docx' | '.pdf';

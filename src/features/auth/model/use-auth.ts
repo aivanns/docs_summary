@@ -1,10 +1,11 @@
+"use client";
+
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { authApi } from "../api";
 import { QUERY_KEYS } from "@/shared/enums/query-keys";
 import { SessionState, useSessionStore } from "@/entities/session";
 import { HOME } from "@/shared/router/routes";
-import { config } from "@/shared/config";
 import { AuthFormData } from "../types";
 
 export const useAuth = () => {
@@ -21,11 +22,15 @@ export const useAuth = () => {
     mutationKey: [QUERY_KEYS.AUTH],
     mutationFn: async (credentials: AuthFormData) => {
       const data = await authApi.login(credentials);
-      localStorage.setItem(config.auth.JWT.ACCESS_TOKEN, data.accessToken);
-      localStorage.setItem(config.auth.JWT.REFRESH_TOKEN, data.refreshToken);
       await fetch("/api/auth/set-token", {
         method: "POST",
-        body: JSON.stringify({ token: data.refreshToken }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken 
+        }),
       });
       return data;
     },

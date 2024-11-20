@@ -3,23 +3,37 @@
 import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { SOCKET_CONFIG } from '@/shared/config/socket';
+import { message } from 'antd';
 
-export const useSocket = () => {
+export const useSocket = (shouldConnect: boolean = true) => {
   const socketRef = useRef<Socket | null>(null);
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    socketRef.current = io(SOCKET_CONFIG.url, SOCKET_CONFIG.options);
+    console.log('shouldConnect', shouldConnect);
+    if (shouldConnect) {
+      socketRef.current = io(SOCKET_CONFIG.url, SOCKET_CONFIG.getOptions());
 
-    socketRef.current.on('connect', () => {});
-    socketRef.current.on('disconnect', () => {});
-    socketRef.current.on('connect_error', () => {});
+      socketRef.current.on('connect', () => {
+        messageApi.success('Соединение с сервером установлено');
+      });
 
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
-    };
-  }, []);
+      socketRef.current.on('disconnect', () => {
+        messageApi.error('Соединение с сервером потеряно');
+      });
+
+      socketRef.current.on('connect_error', () => {
+        messageApi.error('Ошибка подключения к серверу');
+      });
+
+      return () => {
+        if (socketRef.current) {
+          socketRef.current.disconnect();
+          socketRef.current = null;
+        }
+      };
+    }
+  }, [messageApi, shouldConnect]);
 
   const emit = (event: string, data: any) => {
     if (socketRef.current) {
@@ -44,5 +58,6 @@ export const useSocket = () => {
     emit,
     on,
     off,
+    contextHolder
   };
 }; 

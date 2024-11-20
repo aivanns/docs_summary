@@ -1,5 +1,6 @@
 import axios from "axios";
-
+import Cookies from "js-cookie";
+import { config as appConfig } from "@/shared/config";
 export const apiRequest = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
@@ -7,7 +8,7 @@ export const apiRequest = axios.create({
 // Добавляем интерцептор для добавления заголовка авторизации
 apiRequest.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = Cookies.get(appConfig.auth.JWT.ACCESS_TOKEN);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

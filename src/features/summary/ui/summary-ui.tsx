@@ -24,11 +24,7 @@ export const Summary = ({ className }: { className?: string }) => {
 
   useEffect(() => {
     const handleSummary = (data: any) => {
-      if (typeof data === 'string') {
-        setSummary(data);
-      } else if (data && typeof data.summary === 'string') {
-        setSummary(data.summary);
-      }
+      setSummary(data.summary);
       setIsLoading(false);
       setPosition(null);
     };
@@ -77,9 +73,6 @@ export const Summary = ({ className }: { className?: string }) => {
 
       const reader = new FileReader();
       reader.onload = async (e) => {
-        const content = e.target?.result as string;
-        setText(content);
-        
         try {
           await SummaryApi.summarizeFile(file);
         } catch (error) {

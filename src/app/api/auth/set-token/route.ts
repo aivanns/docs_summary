@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     name: config.auth.JWT.ACCESS_TOKEN,
     value: accessToken,
     maxAge: 60 * 60, // 1 hour
-    httpOnly: true,
+    httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
   });
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     name: config.auth.JWT.REFRESH_TOKEN,
     value: refreshToken,
     maxAge: config.auth.REFRESHTOKENLIVETIME,
-    httpOnly: true,
+    httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
   });

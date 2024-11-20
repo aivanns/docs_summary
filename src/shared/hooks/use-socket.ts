@@ -1,57 +1,102 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { SOCKET_CONFIG } from '@/shared/config/socket';
 import { message } from 'antd';
+import Cookies from 'js-cookie';
+import { config } from '@/shared/config';
 
 export const useSocket = (shouldConnect: boolean = true) => {
   const socketRef = useRef<Socket | null>(null);
   const [messageApi, contextHolder] = message.useMessage();
+  const subscribersRef = useRef<Map<string, Function[]>>(new Map());
+
+  const connect = useCallback(() => {
+    if (socketRef.current?.connected) {
+      return;
+    }
+
+    const token = Cookies.get(config.auth.JWT.ACCESS_TOKEN);
+    if (!token) {
+      return;
+    }
+
+    socketRef.current = io(SOCKET_CONFIG.url, {
+      ...SOCKET_CONFIG.getOptions(),
+      auth: {
+        token
+      }
+    });
+
+    socketRef.current.on('connect', () => {
+      messageApi.success('Соединение с сервером установлено');
+      
+      // Восстанавливаем подписки после переподключения
+      subscribersRef.current.forEach((callbacks, event) => {
+        callbacks.forEach(callback => {
+          socketRef.current?.on(event, callback as any);
+        });
+      });
+    });
+
+    socketRef.current.on('disconnect', () => {
+      messageApi.error('Соединение с сервером потеряно');
+    });
+
+    socketRef.current.on('connect_error', (error) => {
+      messageApi.error('Ошибка подключения к серверу');
+    });
+  }, [messageApi]);
 
   useEffect(() => {
-    console.log('shouldConnect', shouldConnect);
     if (shouldConnect) {
-      socketRef.current = io(SOCKET_CONFIG.url, SOCKET_CONFIG.getOptions());
-
-      socketRef.current.on('connect', () => {
-        messageApi.success('Соединение с сервером установлено');
-      });
-
-      socketRef.current.on('disconnect', () => {
-        messageApi.error('Соединение с сервером потеряно');
-      });
-
-      socketRef.current.on('connect_error', () => {
-        messageApi.error('Ошибка подключения к серверу');
-      });
-
-      return () => {
-        if (socketRef.current) {
-          socketRef.current.disconnect();
-          socketRef.current = null;
-        }
-      };
+      connect();
     }
-  }, [messageApi, shouldConnect]);
 
-  const emit = (event: string, data: any) => {
-    if (socketRef.current) {
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+      }
+      subscribersRef.current.clear();
+    };
+  }, [shouldConnect, connect]);
+
+  const emit = useCallback((event: string, data: any) => {
+    if (socketRef.current?.connected) {
       socketRef.current.emit(event, data);
+    } else {
+      connect();
     }
-  };
+  }, [connect]);
 
-  const on = (event: string, callback: (data: any) => void) => {
+  const on = useCallback((event: string, callback: (data: any) => void) => {
+    if (!subscribersRef.current.has(event)) {
+      subscribersRef.current.set(event, []);
+    }
+    subscribersRef.current.get(event)?.push(callback);
+
     if (socketRef.current) {
       socketRef.current.on(event, callback);
     }
-  };
+  }, []);
 
-  const off = (event: string) => {
+  const off = useCallback((event: string, callback?: Function) => {
     if (socketRef.current) {
-      socketRef.current.off(event);
+      if (callback) {
+        socketRef.current.off(event, callback as any);
+        const callbacks = subscribersRef.current.get(event) || [];
+        subscribersRef.current.set(
+          event,
+          callbacks.filter(cb => cb !== callback)
+        );
+      } else {
+        socketRef.current.off(event);
+        subscribersRef.current.delete(event);
+      }
     }
-  };
+  }, []);
 
   return {
     socket: socketRef.current,

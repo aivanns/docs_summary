@@ -24,27 +24,33 @@ export const Summary = ({ className }: { className?: string }) => {
   const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
 
   useEffect(() => {
-    const handleSummary = (data: any) => {
-      setSummary(data.summary);
-      setIsLoading(false);
-      setPosition(null);
-      setIsButtonsDisabled(false);
+    const setupSocketListeners = () => {
+      const handleSummary = (data: any) => {
+        console.log('handleSummary', data);
+        setSummary(data.summary);
+        setIsLoading(false);
+        setPosition(null);
+        setIsButtonsDisabled(false);
+      };
+
+      const handlePosition = (data: any) => { 
+        setPosition(data.position);
+      };
+
+      const handleError = (data: any) => {
+        setIsLoading(false);
+        setPosition(null);
+        setIsButtonsDisabled(false);
+        messageApi.error(data.message || t.summary.error);
+      };
+
+      // Устанавливаем слушатели
+      on('summary', handleSummary);
+      on('position', handlePosition);
+      on('error', handleError);
     };
 
-    const handlePosition = (data: any) => { 
-      setPosition(data.position);
-    };
-
-    const handleError = (data: any) => {
-      setIsLoading(false);
-      setPosition(null);
-      setIsButtonsDisabled(false);
-      messageApi.error(data.message || t.summary.error);
-    };
-
-    on('summary', handleSummary);
-    on('position', handlePosition);
-    on('error', handleError);
+    setupSocketListeners();
 
     return () => {
       off('summary');

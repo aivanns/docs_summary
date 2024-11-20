@@ -21,12 +21,14 @@ export const Summary = ({ className }: { className?: string }) => {
   const { on, off } = useSocketContext();
   const t = useTranslations();
   const [messageApi, contextHolder] = message.useMessage();
+  const [isButtonsDisabled, setIsButtonsDisabled] = useState(false);
 
   useEffect(() => {
     const handleSummary = (data: any) => {
       setSummary(data.summary);
       setIsLoading(false);
       setPosition(null);
+      setIsButtonsDisabled(false);
     };
 
     const handlePosition = (data: any) => { 
@@ -36,6 +38,7 @@ export const Summary = ({ className }: { className?: string }) => {
     const handleError = (data: any) => {
       setIsLoading(false);
       setPosition(null);
+      setIsButtonsDisabled(false);
       messageApi.error(data.message || t.summary.error);
     };
 
@@ -68,6 +71,7 @@ export const Summary = ({ className }: { className?: string }) => {
 
     try {
       setIsLoading(true);
+      setIsButtonsDisabled(true);
       setSummary("");
       setPosition(0);
 
@@ -77,17 +81,20 @@ export const Summary = ({ className }: { className?: string }) => {
           await SummaryApi.summarizeFile(file);
         } catch (error) {
           setIsLoading(false);
+          setIsButtonsDisabled(false);
           setPosition(null);
           messageApi.error(t.summary.error);
         }
       };
       reader.onerror = () => {
         setIsLoading(false);
+        setIsButtonsDisabled(false);
         messageApi.error(t.summary.fileReadError);
       };
       reader.readAsText(file);
     } catch (error) {
       setIsLoading(false);
+      setIsButtonsDisabled(false);
       messageApi.error(t.summary.error);
     }
   };
@@ -101,11 +108,13 @@ export const Summary = ({ className }: { className?: string }) => {
     setSummary("");
     setPosition(0);
     setIsLoading(true);
+    setIsButtonsDisabled(true);
 
     try {
       await SummaryApi.summarizeText(text);
     } catch (error) {
       setIsLoading(false);
+      setIsButtonsDisabled(false);
       setPosition(null);
       messageApi.error(t.summary.error);
     }
@@ -128,6 +137,7 @@ export const Summary = ({ className }: { className?: string }) => {
               <Button 
                 type="primary" 
                 size="large"
+                disabled={isButtonsDisabled}
                 icon={<Upload size={18} />}
                 className={cn(
                   "h-auto py-4 px-6",
@@ -152,6 +162,7 @@ export const Summary = ({ className }: { className?: string }) => {
               <Button 
                 type="primary"
                 size="large"
+                disabled={isButtonsDisabled}
                 className={cn(
                   "h-auto py-4",
                   "!bg-primary hover:!bg-primary-hover",

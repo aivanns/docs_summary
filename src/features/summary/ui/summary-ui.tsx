@@ -8,7 +8,7 @@ import { useSocketContext } from '@/shared/providers/socket-provider';
 import { SummaryApi } from "../api/summary-api";
 import { useTranslations } from "@/shared/hooks/use-translations";
 import { isValidFileType, MAX_FILE_SIZE } from "@/shared/utils/file-validator";
-import type { FileUploadEvent, SupportedFileTypes } from "../types";
+import type { FileUploadEvent, SummarySocketResponse, SummaryPositionSocketResponse, SummaryErrorSocketResponse, SupportedFileTypes } from "../types";
 
 const ACCEPTED_FILE_TYPES: SupportedFileTypes[] = ['.txt', '.doc', '.docx', '.pdf'];
 
@@ -25,23 +25,25 @@ export const Summary = ({ className }: { className?: string }) => {
 
   useEffect(() => {
     const setupSocketListeners = () => {
-      const handleSummary = (data: any) => {
-        console.log('handleSummary', data);
-        setSummary(data.summary);
+      const handleSummary = (data: unknown) => {
+        const summaryData = data as SummarySocketResponse;
+        setSummary(summaryData.summary);
         setIsLoading(false);
         setPosition(null);
         setIsButtonsDisabled(false);
       };
 
-      const handlePosition = (data: any) => { 
-        setPosition(data.position);
+      const handlePosition = (data: unknown) => {
+        const positionData = data as SummaryPositionSocketResponse;
+        setPosition(parseInt(positionData.position));
       };
 
-      const handleError = (data: any) => {
+      const handleError = (data: unknown) => {
+        const errorData = data as SummaryErrorSocketResponse;
         setIsLoading(false);
         setPosition(null);
         setIsButtonsDisabled(false);
-        messageApi.error(data.message || t.summary.error);
+        messageApi.error(errorData.error || t.summary.error);
       };
 
       // Устанавливаем слушатели
@@ -82,10 +84,10 @@ export const Summary = ({ className }: { className?: string }) => {
       setPosition(0);
 
       const reader = new FileReader();
-      reader.onload = async (e) => {
+      reader.onload = async () => {
         try {
           await SummaryApi.summarizeFile(file);
-        } catch (error) {
+        } catch {
           setIsLoading(false);
           setIsButtonsDisabled(false);
           setPosition(null);
@@ -98,7 +100,7 @@ export const Summary = ({ className }: { className?: string }) => {
         messageApi.error(t.summary.fileReadError);
       };
       reader.readAsText(file);
-    } catch (error) {
+    } catch {
       setIsLoading(false);
       setIsButtonsDisabled(false);
       messageApi.error(t.summary.error);
@@ -118,7 +120,7 @@ export const Summary = ({ className }: { className?: string }) => {
 
     try {
       await SummaryApi.summarizeText(text);
-    } catch (error) {
+    } catch {
       setIsLoading(false);
       setIsButtonsDisabled(false);
       setPosition(null);

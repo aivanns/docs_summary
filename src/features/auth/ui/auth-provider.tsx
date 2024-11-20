@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
-  const { isAuthenticated, refreshTokens } = useSessionStore();
+  const { refreshTokens } = useSessionStore();
 
   useEffect(() => {
     const accessToken = Cookies.get(config.auth.JWT.ACCESS_TOKEN);

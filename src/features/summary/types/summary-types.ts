@@ -1,18 +1,21 @@
-export interface CreateSummaryPayload {
-  // Define create payload here
-}
-
-export interface UpdateSummaryPayload {
-  // Define update payload here
-}
-
 export interface SummaryResponse {
-  // Define API response here
+  message: string;
+  jobId: string;
 }
 
-export interface SummaryListResponse {
-  items: SummaryResponse[];
-  total: number;
+export interface SummarySocketResponse {
+  summary: string;
+  jobId: string;
+}
+
+export interface SummaryPositionSocketResponse {
+  position: string;
+  jobId: string;
+}
+
+export interface SummaryErrorSocketResponse {
+  error: string;
+  jobId: string;
 }
 
 export interface FileUploadEvent extends React.ChangeEvent<HTMLInputElement> {

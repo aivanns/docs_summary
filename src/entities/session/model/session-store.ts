@@ -64,5 +64,6 @@ export const useSessionStore = create<SessionState>((set) => ({
     }
     await fetch("/api/auth/remove-token", { method: "POST" });
     set({ isAuthenticated: false });
+    window.location.href = '/auth';
   },
 }));

@@ -38,4 +38,17 @@ export const en = {
     password: "Password must be at least 6 characters",
     required: "This field is required",
   },
+  summary: {
+    title: "Summarizer",
+    uploadFile: "Upload file",
+    summarize: "Summarize",
+    placeholder: "Enter or paste text here...",
+    result: "Result",
+    enterText: "Enter text for summarization",
+    queuePosition: "Your position in queue:",
+    logout: {
+      button: "Sign out",
+      tooltip: "Sign out from system"
+    }
+  },
 };

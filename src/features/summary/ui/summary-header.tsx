@@ -1,6 +1,25 @@
+"use client";
+
 import { cn } from "@/shared/utils/lib/cn";
+import { useEffect, useState } from "react";
+import { SummaryApi } from "../api/summary-api";
+import { TbSum } from "react-icons/tb";
+import { Button, Tooltip } from "antd";
+import { LogOut } from "lucide-react";
+import { useSessionStore } from "@/entities/session";
+import { useTranslations } from "@/shared/hooks/use-translations";
 
 const SummaryHeader = ({ className }: { className?: string }) => {
+  const [username, setUsername] = useState<string | null>(null);
+  const { logout } = useSessionStore();
+  const t = useTranslations();
+
+  useEffect(() => {
+    SummaryApi.getSelf()
+      .then((data) => setUsername(data.data.username))
+      .catch(() => setUsername(null));
+  }, []);
+
   return <div className={cn(
     "flex justify-between items-center",
     "bg-primary dark:bg-dark-surface",
@@ -11,8 +30,32 @@ const SummaryHeader = ({ className }: { className?: string }) => {
     className
     )}
   >
-    <div className="text-lg font-bold text-white dark:text-white">Summarize It</div>
-    <div className="text-white/80 dark:text-gray-400">Username</div>
+    <div className="flex items-center gap-1">
+      <TbSum size={28} className="text-white"/>
+      <div className="text-lg font-bold text-white dark:text-white">Summarize It</div>
+    </div>
+    <div className="flex items-center gap-4">
+      <div className="text-white/80 dark:text-gray-400 font-medium">{username}</div>
+      <Tooltip title={t.summary.logout.tooltip}>
+        <Button 
+          onClick={logout}
+          type="text" 
+          icon={<LogOut size={18} />}
+          className={cn(
+            "flex items-center gap-2",
+            "text-white/80 hover:text-white",
+            "dark:text-gray-400 dark:hover:text-white",
+            "font-medium",
+            "transition-all duration-200",
+            "hover:scale-105",
+            "hover:bg-white/10",
+            "dark:hover:bg-gray-800"
+          )}
+        >
+          {t.summary.logout.button}
+        </Button>
+      </Tooltip>
+    </div>
   </div>;
 };
 

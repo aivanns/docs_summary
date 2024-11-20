@@ -10,11 +10,11 @@ import { ThemeProvider } from "@/features/theme/ui/theme-provider";
 export function Providers({ children }: PropsWithChildren) {
   return (
     <QueryProvider>
-      <ThemeProvider> 
+      <ThemeProvider>
         <AntdConfigProvider>
           <SocketProvider>
-          <App>{children}</App>
-        </SocketProvider>
+            <App>{children}</App>
+          </SocketProvider>
         </AntdConfigProvider>
       </ThemeProvider>
     </QueryProvider>

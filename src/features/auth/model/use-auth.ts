@@ -21,6 +21,7 @@ export const useAuth = () => {
     mutationKey: [QUERY_KEYS.AUTH],
     mutationFn: async (credentials: AuthFormData) => {
       const data = await authApi.login(credentials);
+      localStorage.setItem(config.auth.JWT.ACCESS_TOKEN, data.accessToken);
       localStorage.setItem(config.auth.JWT.REFRESH_TOKEN, data.refreshToken);
       await fetch("/api/auth/set-token", {
         method: "POST",

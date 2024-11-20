@@ -1,14 +1,77 @@
 "use client";
 
 import { cn } from "@/shared/utils/lib/cn";
-import { Button, Input, ConfigProvider } from "antd";
-import { useState } from "react";
+import { Button, Input, Spin } from "antd";
+import { useState, useEffect } from "react";
 import { Upload } from "lucide-react";
+import { useSocketContext } from '@/shared/providers/socket-provider';
+import { SummaryApi } from "../api/summary-api";
 
 export const Summary = ({ className }: { className?: string }) => {
   const { TextArea } = Input;
   const [text, setText] = useState("");
-  
+  const [summary, setSummary] = useState<string | null>(null);
+  const [position, setPosition] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { emit, on, off } = useSocketContext();
+
+  useEffect(() => {
+    const handleSummary = (data: any) => {
+      if (typeof data === 'string') {
+        setSummary(data);
+      } else if (data && typeof data.summary === 'string') {
+        setSummary(data.summary);
+      }
+      setIsLoading(false);
+      setPosition(null);
+    };
+
+    const handlePosition = (data: any) => {
+      setPosition(data.position);
+    };
+
+    const handleError = (data: any) => {
+      setIsLoading(false);
+      setPosition(null);
+    };
+
+    on('summary', handleSummary);
+    on('position', handlePosition);
+    on('error', handleError);
+
+    return () => {
+      off('summary');
+      off('position');
+      off('error');
+    };
+  }, [on, off]);
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      setText(content);
+    };
+    reader.readAsText(file);
+  };
+
+  const handleSummarize = () => {
+    if (!text.trim()) return;
+    
+    setSummary("");
+    setPosition(0);
+    setIsLoading(true);
+
+    SummaryApi.summarize(text)
+      .catch(() => {
+        setIsLoading(false);
+        setPosition(null);
+      });
+  };
+
   return (
     <div className={cn(
       "flex flex-col items-center",
@@ -34,10 +97,17 @@ export const Summary = ({ className }: { className?: string }) => {
                 "transform hover:scale-[1.02]",
                 "transition-all duration-200"
               )}
-              onClick={() => {}}
+              onClick={() => document.getElementById('fileInput')?.click()}
             >
               <span className="ml-2 font-medium">Загрузить файл</span>
             </Button>
+            <input
+              id="fileInput"
+              type="file"
+              accept=".txt,.doc,.docx,.pdf"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
             <Button 
               type="primary"
               size="large"
@@ -50,7 +120,7 @@ export const Summary = ({ className }: { className?: string }) => {
                 "transform hover:scale-[1.02]",
                 "transition-all duration-200"
               )}
-              onClick={() => {}}
+              onClick={handleSummarize}
             >
               <span className="font-medium">Суммаризировать</span>
             </Button>
@@ -84,18 +154,39 @@ export const Summary = ({ className }: { className?: string }) => {
           "shadow-md",
           "transition-all duration-200"
         )}>
-          <h3 className="text-lg font-semibold mb-4 text-slate-800 dark:text-gray-100">
-            Результат
-          </h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-gray-100">
+              Результат
+            </h3>
+          </div>
+          
           <div className="text-slate-600 dark:text-gray-400 min-h-[100px]">
-            {text ? "Здесь будет отображаться результат суммаризации..." : 
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <Spin />
+              </div>
+            ) : summary && summary.length > 0 ? (
+              <div className="whitespace-pre-wrap">
+                {summary}
+              </div>
+            ) : (
               <div className="flex items-center justify-center h-[100px] text-slate-400 dark:text-gray-500">
                 Введите текст для суммаризации
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
+      {isLoading && (
+        <div className="flex items-center justify-center">
+          <span className="loader" />
+          {position !== null && (
+            <span className="ml-2 mt-2 text-sm text-slate-500 dark:text-gray-400">
+              Ваша позиция в очереди: {position}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 };

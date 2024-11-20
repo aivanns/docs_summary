@@ -2,6 +2,7 @@
 
 import SummaryWidget from "@/widgets/summary/ui/summary-widget";
 
-export default function HomePage() {
+export default function SummaryPage() {
   return <SummaryWidget />;
 }
+  

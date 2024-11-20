@@ -1,3 +1,3 @@
 export const REGISTER = "/register";
 export const AUTH = "/auth";
-export const HOME = "/summarize";
+export const HOME = "/summary";

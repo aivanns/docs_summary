@@ -19,7 +19,7 @@
 ### Frontend
 - **Next.js 14** - React фреймворк
 - **TypeScript** - Типизированный JavaScript
-- **Zustand** - Управле��ие состоянием
+- **Zustand** - Управление состоянием
 - **Socket.IO** - Веб-сокеты для real-time коммуникации
 - **Ant Design** - UI компоненты
 - **Tailwind CSS** - Утилитарный CSS фреймворк
